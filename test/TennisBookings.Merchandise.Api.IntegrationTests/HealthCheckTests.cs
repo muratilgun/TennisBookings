@@ -19,7 +19,8 @@ namespace TennisBookings.Merchandise.Api.IntegrationTests
         public async Task HealthCheck_RetunsOk()
         {
             var response = await _httpClient.GetAsync("/healthcheck");
-            Assert.Equal(HttpStatusCode.OK,response.StatusCode);
+            response.EnsureSuccessStatusCode();
+            // Assert.Equal(HttpStatusCode.OK,response.StatusCode);
         }
     }
 }
