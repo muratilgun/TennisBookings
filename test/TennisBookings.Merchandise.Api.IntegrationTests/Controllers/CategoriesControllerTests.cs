@@ -4,7 +4,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
+using TennisBookings.Merchandise.Api.IntegrationTests.Models;
+using TennisBookings.Merchandise.Api.IntegrationTests.TestHelpers;
 using Xunit;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace TennisBookings.Merchandise.Api.IntegrationTests.Controllers
 {
@@ -41,8 +45,13 @@ namespace TennisBookings.Merchandise.Api.IntegrationTests.Controllers
         [Fact]
         public async Task GetAll_ReturnsExpectedJson()
         {
-            var response = await _client.GetStringAsync("api/Categories");
-            Assert.Equal("{\"allowedCategories\":[\"Accessories\",\"Bags\",\"Balls\",\"Clothing\",\"Rackets\"]}",response);
+            //var response = await _client.GetStringAsync("api/Categories");
+            //Assert.Equal("{\"allowedCategories\":[\"Accessories\",\"Bags\",\"Balls\",\"Clothing\",\"Rackets\"]}",response);
+            var expected = new List<string> { "Bags", "Balls", "Accessories", "Clothing", "Rackets" };
+            var responseStream = await _client.GetStreamAsync("api/Categories");
+            var model = await JsonSerializer.DeserializeAsync<ExpectedCategoriesModel>(responseStream,JsonSerializerHelper.DefaultDeserialisationOptions);
+            Assert.NotNull(model?.AllowedCategories);
+            Assert.Equal(expected.OrderBy(s=> s),model.AllowedCategories.OrderBy(s=> s));
         }
 
 
