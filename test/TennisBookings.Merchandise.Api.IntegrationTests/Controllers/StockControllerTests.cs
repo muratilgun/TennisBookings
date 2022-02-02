@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
+using TennisBookings.Merchandise.Api.Data.Dto;
+using TennisBookings.Merchandise.Api.IntegrationTests.Fakes;
 using TennisBookings.Merchandise.Api.IntegrationTests.Models;
 using Xunit;
 
@@ -48,6 +50,19 @@ namespace TennisBookings.Merchandise.Api.IntegrationTests.Controllers
             var model = await _client.GetFromJsonAsync<ExpectedStockTotalOutputModel>("total");
             Assert.NotNull(model);
             Assert.True(model.StockItemTotal>0);
+        }
+
+        [Fact]
+        public async Task GetStockTotal_ReturnsExpectedStockQuantity()
+        {
+            var cloudDatabase = new FakeCloudDatabase(new[]
+            {
+                new ProductDto{StockCount = 200},
+                new ProductDto{StockCount = 500},
+                new ProductDto{StockCount = 300}
+            });
+            var model = await _client.GetFromJsonAsync<ExpectedStockTotalOutputModel>("total");
+            Assert.Equal(100,model.StockItemTotal);
         }
     }
 }
