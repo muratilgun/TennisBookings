@@ -17,27 +17,30 @@ namespace TennisBookings.Merchandise.Api.IntegrationTests.Controllers
         private readonly HttpClient _client;
         public CategoriesControllerTests(WebApplicationFactory<Startup> factory)
         {
-            _client = factory.CreateDefaultClient();
+            //_client = factory.CreateDefaultClient();
+            //_client = factory.CreateDefaultClient(new Uri("http://localhost/api/categories"));
+            factory.ClientOptions.BaseAddress = new Uri("http://localhost/api/categories");
+            _client = factory.CreateClient();
         }
 
         [Fact]
         public async Task GetAll_ReturnsSuccessStatus()
         {
-            var response = await _client.GetAsync("api/Categories");
+            var response = await _client.GetAsync("");
             response.EnsureSuccessStatusCode();
         }
 
         [Fact]
         public async Task GetAll_ReturnsExpectedMediaType()
         {
-            var response = await _client.GetAsync("api/Categories");
+            var response = await _client.GetAsync("");
             Assert.Equal("application/json",response.Content.Headers.ContentType.MediaType);
         }
 
         [Fact]
         public async Task GetAll_ReturnsContent()
         {
-            var response = await _client.GetAsync("api/Categories");
+            var response = await _client.GetAsync("");
             Assert.NotNull(response.Content);
             Assert.True(response.Content.Headers.ContentLength > 0);
         }
@@ -48,7 +51,7 @@ namespace TennisBookings.Merchandise.Api.IntegrationTests.Controllers
             //var response = await _client.GetStringAsync("api/Categories");
             //Assert.Equal("{\"allowedCategories\":[\"Accessories\",\"Bags\",\"Balls\",\"Clothing\",\"Rackets\"]}",response);
             var expected = new List<string> { "Bags", "Balls", "Accessories", "Clothing", "Rackets" };
-            var responseStream = await _client.GetStreamAsync("api/Categories");
+            var responseStream = await _client.GetStreamAsync("");
             var model = await JsonSerializer.DeserializeAsync<ExpectedCategoriesModel>(responseStream,JsonSerializerHelper.DefaultDeserialisationOptions);
             Assert.NotNull(model?.AllowedCategories);
             Assert.Equal(expected.OrderBy(s=> s),model.AllowedCategories.OrderBy(s=> s));
