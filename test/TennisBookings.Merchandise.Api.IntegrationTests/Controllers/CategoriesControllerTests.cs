@@ -69,5 +69,15 @@ namespace TennisBookings.Merchandise.Api.IntegrationTests.Controllers
             Assert.Equal(expected.OrderBy(s => s), model.AllowedCategories.OrderBy(s => s));
 
         }
+
+        [Fact]
+        public async Task GetAll_SetsExpectedCacheControlHeader()
+        {
+            var response = await _client.GetAsync("");
+            var header = response.Headers.CacheControl;
+            Assert.True(header.MaxAge.HasValue);
+            Assert.Equal(TimeSpan.FromMinutes(5),header.MaxAge);
+            Assert.True(header.Public);
+        }
     }
 }
