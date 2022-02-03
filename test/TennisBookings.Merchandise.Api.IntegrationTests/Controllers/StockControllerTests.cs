@@ -65,7 +65,7 @@ namespace TennisBookings.Merchandise.Api.IntegrationTests.Controllers
             {
                 new ProductDto{ StockCount = 200},
                 new ProductDto{ StockCount = 500},
-                new ProductDto{ StockCount = 300}
+                new ProductDto{ StockCount = 300},
             });
 
             var client = _factory.WithWebHostBuilder(builder =>
