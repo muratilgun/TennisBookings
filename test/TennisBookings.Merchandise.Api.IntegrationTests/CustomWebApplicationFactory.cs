@@ -23,6 +23,7 @@ namespace TennisBookings.Merchandise.Api.IntegrationTests
             builder.ConfigureTestServices(services =>
             {
                 services.AddSingleton<ICloudDatabase>(FakeCloudDatabase);
+                services.AddSingleton<IMetricRecorder>(new FakeMetricRecorder());
             });
         }
     }

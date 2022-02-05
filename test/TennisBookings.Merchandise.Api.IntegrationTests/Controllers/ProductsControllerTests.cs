@@ -20,12 +20,12 @@ using Xunit;
 
 namespace TennisBookings.Merchandise.Api.IntegrationTests.Controllers
 {
-    public class ProductsControllerTests : IClassFixture<CustomWebApplicationFactory<Startup>>
+    public class MetricMiddlewareTests : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         private readonly HttpClient _client;
         private readonly CustomWebApplicationFactory<Startup> _factory;
 
-        public ProductsControllerTests(CustomWebApplicationFactory<Startup> factory)
+        public MetricMiddlewareTests(CustomWebApplicationFactory<Startup> factory)
         {
             factory.ClientOptions.BaseAddress = new Uri("http://localhost/api/products/");
 
