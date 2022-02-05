@@ -12,6 +12,7 @@ namespace TennisBookings.Merchandise.Api.IntegrationTests.Fakes
         private IReadOnlyCollection<ProductDto> _customDefaultProducts;
 
         public List<ProductDto> Products { get; set; }
+        public bool ShouldThrow { get; set; }
 
         public FakeCloudDatabase(IReadOnlyCollection<ProductDto> products = null)
         {
@@ -32,6 +33,8 @@ namespace TennisBookings.Merchandise.Api.IntegrationTests.Fakes
 
         public Task<IReadOnlyCollection<ProductDto>> ScanAsync()
         {
+            if (ShouldThrow) throw new Exception("Test exception");
+
             return Task.FromResult(Products as IReadOnlyCollection<ProductDto>);
         }
 
