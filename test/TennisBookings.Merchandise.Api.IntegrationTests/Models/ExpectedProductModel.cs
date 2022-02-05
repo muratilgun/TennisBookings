@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace TennisBookings.Merchandise.Api.IntegrationTests.Models
 {
+    [DebuggerDisplay("Name = {Name} Price = {Price}")]
     public class ExpectedProductModel
     {
         public Guid Id { get; set; }
