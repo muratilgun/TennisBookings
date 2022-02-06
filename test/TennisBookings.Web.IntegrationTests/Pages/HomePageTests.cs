@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using TennisBookings.Web.IntegrationTests.Helpers;
 using Xunit;
 
 namespace TennisBookings.Web.IntegrationTests.Pages
@@ -10,6 +11,17 @@ namespace TennisBookings.Web.IntegrationTests.Pages
         public HomePageTests(CustomWebApplicationFactory<Startup> factory)
         {
             _factory = factory;
-        }        
+        }
+
+        [Fact]
+        public async Task Get_ReturnsPageWithExpectedH1()
+        {
+            var client = _factory.CreateClient();
+            var response = await client.GetAsync("/");
+            response.EnsureSuccessStatusCode();
+            using var content = await HtmlHelpers.GetDocumentAsync(response);
+            var h1 = content.QuerySelector("h1");
+            Assert.Equal("Welcome to Tennis by the Sea!",h1.TextContent);
+        }
     }
 }
