@@ -15,5 +15,14 @@ namespace TennisBookings.Web.IntegrationTests.Controllers
             factory.ClientOptions.AllowAutoRedirect = false;            
             _factory = factory;
         }
+
+        [Fact]
+        public async Task Get_SecurePageIsForbiddenForAnUnauthenticatedUser()
+        {
+            var client = _factory.CreateClient();
+            var response = await client.GetAsync("/Admin");
+            Assert.Equal(HttpStatusCode.Redirect,response.StatusCode);
+            Assert.StartsWith("http://localhost/identity/account/login",response.Headers.Location.OriginalString,StringComparison.OrdinalIgnoreCase);
+        }
     }
 }
