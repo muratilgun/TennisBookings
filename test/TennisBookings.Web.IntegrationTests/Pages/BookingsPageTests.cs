@@ -24,6 +24,7 @@ namespace TennisBookings.Web.IntegrationTests.Pages
             factory.ClientOptions.BaseAddress = new Uri("http://localhost/bookings");
             _factory = factory;
         }
+        
         [Fact]
         public async Task NoBookingsTableOnPage_WhenUserHasNoBookings()
         {
@@ -39,7 +40,7 @@ namespace TennisBookings.Web.IntegrationTests.Pages
 
             Assert.Null(table);
 
-            var paragraphs = content.QuerySelectorAll("p").Where(e=> e.TextContent== "You have no upcoming court bookings.").ToArray();
+            var paragraphs = content.QuerySelectorAll("#no-bookings");
 
             Assert.Single(paragraphs);
         }
